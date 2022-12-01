@@ -7,12 +7,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from PySide6.QtWidgets import QMainWindow, QApplication, QFileDialog
-from PySide6.QtCore import Slot, Qt
+from PySide6.QtCore import Slot, Qt, QObject, Signal
 from PySide6.QtGui import QCloseEvent
 
 from ui.main_form import Ui_MainWindow
 
 from threading import Thread, Event
+
+class Trans_signal(QObject):
+    transaltion = Signal(str)
 
 class Mainwindow(QMainWindow, Ui_MainWindow):
     LANGUAGE_DIC = {"한국어" : "ko"
@@ -31,13 +34,46 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.pushButton_select_chrome_driver.clicked.connect(self.btn_select_chrome_driver_handler)
         self.pushButton_translation.clicked.connect(self.btn_translation_handler)
 
+        # 번역 시그널
+        self.papago_transaltion_completion = Trans_signal()
+        self.google_transaltion_completion = Trans_signal()
+        self.papago_transaltion_completion.transaltion.connect(self.papago_trans_completion_handler)
+        self.google_transaltion_completion.transaltion.connect(self.google_trans_completion_handler)
+
+        # 클립보드 이벤트
         self.clip = QApplication.clipboard()
         self.clip.dataChanged.connect(self.clip_dataChanged_handler)
+
+        # 쓰레드
+        self.work_thread = Thread(target = self.work_proc, args= (self.papago_transaltion_completion, self.google_transaltion_completion))
+        self.exit_event = Event()
+        self.wait_event = Event()
+        self.exit_event.set()
+        self.wait_event.clear()
+        self.work_thread.start()
+
+    def work_proc(self, papago_signal : Trans_signal, google_signal : Trans_signal):
+        while self.wait_event.is_set() == False:
+            while self.exit_event.is_set() == False:
+                papago_translation_text = self.papago_translation()
+                google_translation_text = self.google_translation()
+                papago_signal.transaltion.emit(papago_translation_text)
+                google_signal.transaltion.emit(google_translation_text)
+                self.exit_event.set()
+
+    @Slot(str)
+    def papago_trans_completion_handler(self, text : str):
+        self.textBrowser_papago.setText(text)
+
+    @Slot(str)
+    def google_trans_completion_handler(self, text : str):
+        self.textBrowser_google.setText(text)
 
     @Slot()
     def clip_dataChanged_handler(self):
         if self.checkBox_auto.checkState() == Qt.CheckState.Checked:
             self.textEdit_translation_before.setText(self.clip.text())
+            self.pushButton_translation.click()
 
     @Slot()
     def btn_select_chrome_driver_handler(self):
@@ -48,11 +84,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
 
     @Slot()
     def btn_translation_handler(self):
-        papago_text = self.papago_translation()
-        self.textBrowser_papago.setText(papago_text)
-        google_text = self.google_translation()
-        self.textBrowser_google.setText(google_text)
-        pass
+        self.exit_event.clear()
 
     def papago_translation(self) -> str:
         options = webdriver.ChromeOptions()
@@ -86,6 +118,16 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         if elem:
             translation = self.driver_google.find_element(By.XPATH,x_path).text
             return str(translation)
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        self.exit_event.set()
+        self.wait_event.set()
+        self.work_thread.join(3)
+        if self.driver_google:
+            self.driver_google.close()
+        if self.driver_papago:
+            self.driver_papago.close()
+        return super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
