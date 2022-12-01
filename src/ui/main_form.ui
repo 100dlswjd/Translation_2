@@ -93,7 +93,7 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_info">
+         <widget class="QLabel" name="label_help">
           <property name="text">
            <string>번역할 내용 입력(언어 감지)</string>
           </property>
@@ -177,6 +177,16 @@
        </layout>
       </item>
       <item>
+       <widget class="QLabel" name="label_info">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="leftMargin">
          <number>4</number>
@@ -205,7 +215,7 @@
            <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="label_papago">
             <property name="text">
              <string>파파고 번역</string>
             </property>
@@ -248,7 +258,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="label_google">
             <property name="text">
              <string>구글 번역</string>
             </property>

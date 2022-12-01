@@ -60,10 +60,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(4, 4, 4, 4)
-        self.label_info = QLabel(self.centralwidget)
-        self.label_info.setObjectName(u"label_info")
+        self.label_help = QLabel(self.centralwidget)
+        self.label_help.setObjectName(u"label_help")
 
-        self.horizontalLayout_2.addWidget(self.label_info)
+        self.horizontalLayout_2.addWidget(self.label_help)
 
         self.label___ = QLabel(self.centralwidget)
         self.label___.setObjectName(u"label___")
@@ -106,17 +106,23 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.verticalLayout)
 
+        self.label_info = QLabel(self.centralwidget)
+        self.label_info.setObjectName(u"label_info")
+        self.label_info.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_4.addWidget(self.label_info)
+
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(4, 4, 4, 4)
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(4, 4, 4, 4)
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignCenter)
+        self.label_papago = QLabel(self.centralwidget)
+        self.label_papago.setObjectName(u"label_papago")
+        self.label_papago.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_2.addWidget(self.label)
+        self.verticalLayout_2.addWidget(self.label_papago)
 
         self.textBrowser_papago = QTextBrowser(self.centralwidget)
         self.textBrowser_papago.setObjectName(u"textBrowser_papago")
@@ -130,11 +136,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(4, 4, 4, 4)
-        self.label_2 = QLabel(self.centralwidget)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.label_google = QLabel(self.centralwidget)
+        self.label_google.setObjectName(u"label_google")
+        self.label_google.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_3.addWidget(self.label_2)
+        self.verticalLayout_3.addWidget(self.label_google)
 
         self.textBrowser_google = QTextBrowser(self.centralwidget)
         self.textBrowser_google.setObjectName(u"textBrowser_google")
@@ -170,7 +176,7 @@ class Ui_MainWindow(object):
         self.label_chrome_driver.setText(QCoreApplication.translate("MainWindow", u"\ud06c\ub86c \ub4dc\ub77c\uc774\ubc84 : ", None))
         self.label_select_chrome_driver.setText("")
         self.pushButton_select_chrome_driver.setText(QCoreApplication.translate("MainWindow", u"\ud30c\uc77c \uc120\ud0dd", None))
-        self.label_info.setText(QCoreApplication.translate("MainWindow", u"\ubc88\uc5ed\ud560 \ub0b4\uc6a9 \uc785\ub825(\uc5b8\uc5b4 \uac10\uc9c0)", None))
+        self.label_help.setText(QCoreApplication.translate("MainWindow", u"\ubc88\uc5ed\ud560 \ub0b4\uc6a9 \uc785\ub825(\uc5b8\uc5b4 \uac10\uc9c0)", None))
         self.label___.setText(QCoreApplication.translate("MainWindow", u"-- >", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"\ud55c\uad6d\uc5b4", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"\uc601\uc5b4", None))
@@ -180,7 +186,8 @@ class Ui_MainWindow(object):
 
         self.checkBox_auto.setText(QCoreApplication.translate("MainWindow", u"\ubcf5\uc0ac\uc790\ub3d9\uc785\ub825", None))
         self.pushButton_translation.setText(QCoreApplication.translate("MainWindow", u"\ubc88\uc5ed", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\ud30c\ud30c\uace0 \ubc88\uc5ed", None))
+        self.label_info.setText("")
+        self.label_papago.setText(QCoreApplication.translate("MainWindow", u"\ud30c\ud30c\uace0 \ubc88\uc5ed", None))
         self.textBrowser_papago.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -189,7 +196,7 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'\ub9d1\uc740 \uace0\ub515'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\uad6c\uae00 \ubc88\uc5ed", None))
+        self.label_google.setText(QCoreApplication.translate("MainWindow", u"\uad6c\uae00 \ubc88\uc5ed", None))
         self.textBrowser_google.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
