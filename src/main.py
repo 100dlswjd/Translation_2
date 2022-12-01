@@ -14,6 +14,9 @@ from ui.main_form import Ui_MainWindow
 
 from threading import Thread, Event
 
+class Msg_signal(QObject):
+    msg = Signal(str)
+
 class Trans_signal(QObject):
     transaltion = Signal(str)
 
@@ -44,31 +47,43 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.papago_transaltion_completion.transaltion.connect(self.papago_trans_completion_handler)
         self.google_transaltion_completion.transaltion.connect(self.google_trans_completion_handler)
 
+        # 메시지 시그널
+        self.msg_signal = Msg_signal()
+        self.msg_signal.msg.connect(self.msg_signal_handler)
+
         # 클립보드 이벤트
         self.clip = QApplication.clipboard()
         self.clip.dataChanged.connect(self.clip_dataChanged_handler)
 
         # 쓰레드
-        self.work_thread = Thread(target = self.work_proc, args= (self.papago_transaltion_completion, self.google_transaltion_completion))
+        self.work_thread = Thread(target = self.work_proc, args= (self.papago_transaltion_completion, self.google_transaltion_completion, self.msg_signal))
         self.exit_event = Event()
         self.wait_event = Event()
         self.exit_event.set()
         self.wait_event.clear()
         self.work_thread.start()
 
-    def work_proc(self, papago_signal : Trans_signal, google_signal : Trans_signal):
+    def work_proc(self, papago_signal : Trans_signal, google_signal : Trans_signal, msg_signal : Msg_signal):
         while self.wait_event.is_set() == False:
             while self.exit_event.is_set() == False:
-                papago_translation_text = self.papago_translation()
-                google_translation_text = self.google_translation()
-                papago_signal.transaltion.emit(papago_translation_text)
-                google_signal.transaltion.emit(google_translation_text)
-                self.exit_event.set()
+                try:
+                    msg_signal.msg.emit("번역중입니다.")
+                    papago_translation_text = self.papago_translation()
+                    google_translation_text = self.google_translation()
+                    papago_signal.transaltion.emit(papago_translation_text)
+                    google_signal.transaltion.emit(google_translation_text)
+                    msg_signal.msg.emit("완료")
+                    self.exit_event.set()
+                except OSError:
+                    msg_signal.msg.emit("크롬 드라이버를 선택해주세요")
+                    self.exit_event.set()
+                except:
+                    msg_signal.msg.emit("버그가 발생하였습니다\n다시 시도해주세요")
+                    self.exit_event.set()
 
     @Slot()
     def comboBox_change_handler(self):
         self.after_language = self.LANGUAGE_DIC[self.comboBox.currentText()]
-        print(self.after_language)
 
     @Slot(str)
     def papago_trans_completion_handler(self, text : str):
@@ -77,6 +92,10 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
     @Slot(str)
     def google_trans_completion_handler(self, text : str):
         self.textBrowser_google.setText(text)
+
+    @Slot(str)
+    def msg_signal_handler(self, text):
+        self.label_info.setText(text)
 
     @Slot()
     def clip_dataChanged_handler(self):
