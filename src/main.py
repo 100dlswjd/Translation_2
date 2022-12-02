@@ -1,5 +1,7 @@
 import sys
 import time
+import ctypes
+import os
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -9,11 +11,20 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from PySide6.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PySide6.QtCore import Slot, Qt, QObject, Signal
-from PySide6.QtGui import QCloseEvent
+from PySide6.QtGui import QCloseEvent, QPixmap
 
 from ui.main_form import Ui_MainWindow
 
 from threading import Thread, Event
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 class Msg_signal(QObject):
     msg = Signal(str)
@@ -30,6 +41,10 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(Mainwindow, self).__init__()
         self.setupUi(self)
+
+        myappid = 'multi translator' # arbitrary string
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
         self.chrome_driver_path = ""
         self.driver_papago = False
         self.driver_google = False
@@ -163,5 +178,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Mainwindow()
     window.show()
+    icon = resource_path("icon/T.ico")
+    icon = QPixmap(icon)
+    app.setWindowIcon(icon)
     app.setStyle('Fusion')
     app.exec()
