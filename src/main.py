@@ -1,4 +1,5 @@
 import sys
+import time
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -80,6 +81,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
                 except:
                     msg_signal.msg.emit("버그가 발생하였습니다\n다시 시도해주세요")
                     self.exit_event.set()
+            time.sleep(0)
 
     @Slot()
     def comboBox_change_handler(self):
