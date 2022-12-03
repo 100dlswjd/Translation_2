@@ -168,10 +168,11 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.exit_event.set()
         self.wait_event.set()
         self.work_thread.join(3)
-        if self.driver_google:
+        try:
             self.driver_google.close()
-        if self.driver_papago:
             self.driver_papago.close()
+        except:
+            pass
         return super().closeEvent(event)
 
 if __name__ == "__main__":
